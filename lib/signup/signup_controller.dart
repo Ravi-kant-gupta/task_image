@@ -22,19 +22,29 @@ class SignUpController extends GetxController {
     }
 
     try {
+      Get.dialog(
+        Container(
+          width: Get.width,
+          height: Get.height,
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.1)
+          ),
+          child: Center(child: CircularProgressIndicator(
+            color: Colors.blueGrey[700]
+            )),)
+      );
       UserCredential user = await _auth.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
 
       if(user.user!.uid != null){
-        Get.offAllNamed('/'); // Navigate to Home Page after successful sign-up
+        Get.offAllNamed('/'); 
       }else{
         Get.snackbar("Error", "Not Created");
       }
     }on FirebaseAuthException catch (e) {
-    // Handle specific FirebaseAuthException codes
-    String message;
+   
     switch (e.code) {
       case 'weak-password':
         errorMessage.value = 'The password provided is too weak.';
@@ -49,11 +59,11 @@ class SignUpController extends GetxController {
         errorMessage.value = 'Sign-up failed. Please try again.';
         break;
     }
-    // Show the error message using Get.snackbar
-    // Get.snackbar("Sign-up Error", message);
+   
   }  catch (e) {
-      print("=====${e}");
       errorMessage.value = 'Sign-up failed. Please try again.';
+    }finally{
+      Get.back();
     }
   }
 }

@@ -2,10 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task/home/home_screen.dart';
+import 'package:task/login/login_controller.dart';
 import 'package:task/login/login_page.dart';
 import 'package:task/signup/signup_screen.dart';
-
-import 'auth_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,11 +16,13 @@ void main() async {
     projectId: 'task-2587d',
     storageBucket: 'gs://task-2587d.appspot.com',
   )).whenComplete(() => print("Complete"));
-  Get.put(AuthController()); // Initialize the AuthController
-  runApp(MyApp());
+  Get.put(AuthController()); 
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -38,24 +39,24 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/signup', page: () => SignUpPage()),
         GetPage(
             name: '/home',
-            page: () => HomeScreen()), // Ensure you have a HomePage defined
+            page: () => HomeScreen()),
       ],
     );
   }
 }
 
 class YourInitialScreen extends StatelessWidget {
+  const YourInitialScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final AuthController authController = Get.put(AuthController());
-
-    // Check if the user is logged in or not
     authController.userLoginOrNot();
 
-    return Scaffold(
+    return const Scaffold(
       body: Center(
           child:
-              CircularProgressIndicator()), // Show loading while checking login status
+              CircularProgressIndicator()),
     );
   }
 }

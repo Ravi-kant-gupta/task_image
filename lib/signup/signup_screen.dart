@@ -1,88 +1,26 @@
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-
-// import 'signup_controller.dart'; // Import the controller
-
-// class SignUpPage extends StatelessWidget {
-//   final SignUpController signUpController = Get.put(SignUpController());
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Sign Up'),
-//         centerTitle: true,
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             TextField(
-//               controller: signUpController.emailController,
-//               decoration: InputDecoration(labelText: 'Email'),
-//             ),
-//             Obx(() => TextField(
-//                   controller: signUpController.passwordController,
-//                   obscureText: signUpController.obscureText.value,
-//                   decoration: InputDecoration(
-//                     labelText: 'Password',
-//                     suffixIcon: IconButton(
-//                       icon: Icon(
-//                         signUpController.obscureText.value
-//                             ? Icons.visibility
-//                             : Icons.visibility_off,
-//                       ),
-//                       onPressed: signUpController.togglePasswordVisibility,
-//                     ),
-//                   ),
-//                 )),
-//             TextField(
-//               controller: signUpController.confirmPasswordController,
-//               obscureText: true,
-//               decoration: InputDecoration(labelText: 'Confirm Password'),
-//             ),
-//             SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: signUpController.signUp,
-//               child: Text('Sign Up'),
-//             ),
-//             Obx(() => signUpController.errorMessage.value.isNotEmpty
-//                 ? Padding(
-//                     padding: const EdgeInsets.only(top: 20),
-//                     child: Text(
-//                       signUpController.errorMessage.value,
-//                       style: TextStyle(color: Colors.red),
-//                     ),
-//                   )
-//                 : SizedBox.shrink()),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'signup_controller.dart'; // Import the controller
+import 'signup_controller.dart';
 
 class SignUpPage extends StatelessWidget {
   final SignUpController signUpController = Get.put(SignUpController());
-  final _formKey = GlobalKey<FormState>(); // Form key for validation
+  final _formKey = GlobalKey<FormState>();
+
+  SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: const Text('Sign Up'),
         centerTitle: true,
         backgroundColor: Colors.blueGrey[700],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
-          key: _formKey, // Assign the form key
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -96,12 +34,12 @@ class SignUpPage extends StatelessWidget {
                   color: Colors.blueGrey[700],
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               TextFormField(
                 controller: signUpController.emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  prefixIcon: Icon(Icons.email),
+                  prefixIcon: const Icon(Icons.email),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -117,13 +55,13 @@ class SignUpPage extends StatelessWidget {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Obx(() => TextFormField(
                     controller: signUpController.passwordController,
                     obscureText: signUpController.obscureText.value,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      prefixIcon: Icon(Icons.lock),
+                      prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
                           signUpController.obscureText.value
@@ -146,13 +84,13 @@ class SignUpPage extends StatelessWidget {
                       return null;
                     },
                   )),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: signUpController.confirmPasswordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Confirm Password',
-                  prefixIcon: Icon(Icons.lock),
+                  prefixIcon: const Icon(Icons.lock),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -167,7 +105,7 @@ class SignUpPage extends StatelessWidget {
                   return null;
                 },
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -177,12 +115,12 @@ class SignUpPage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueGrey[700],
                   foregroundColor: Colors.white,
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'Sign Up',
                   style: TextStyle(fontSize: 18),
                 ),
@@ -192,11 +130,11 @@ class SignUpPage extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 20),
                       child: Text(
                         signUpController.errorMessage.value,
-                        style: TextStyle(color: Colors.red),
+                        style: const TextStyle(color: Colors.red),
                         textAlign: TextAlign.center,
                       ),
                     )
-                  : SizedBox.shrink()),
+                  : const SizedBox.shrink()),
             ],
           ),
         ),

@@ -6,27 +6,24 @@ import 'package:get/get.dart';
 import 'package:task/home/home_controller.dart';
 
 class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
   final ImageController imageController = Get.put(ImageController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: const Text('Home'),
         actions: [
           IconButton(
               onPressed: () async {
-                imageController.logout();
+                
+                imageController.showLogoutDialog();
               },
-              icon: Icon(Icons.logout)),
-          IconButton(
-              onPressed: () async {
-                imageController.fetchSearchHistory();
-              },
-              icon: Icon(Icons.get_app)),
+              icon: const Icon(Icons.logout))
         ],
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(60.0),
+          preferredSize: const Size.fromHeight(60.0),
           child: Container(
             margin: const EdgeInsets.all(8.0),
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -39,13 +36,13 @@ class HomeScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: 'Search for images...',
                     suffixIcon: IconButton(
-                      icon: Icon(Icons.search),
-                      // color: Colors.blue,
-                      padding: EdgeInsets.all(15), // Padding around the icon
+                      icon: const Icon(Icons.search),
+                     
+                      padding: const EdgeInsets.all(15), 
                       constraints:
-                          BoxConstraints(), // Remove default constraints for IconButton
+                          const BoxConstraints(),
                       splashColor: Colors.blueAccent
-                          .withOpacity(0.3), // Splash effect color
+                          .withOpacity(0.3),
                       highlightColor: Colors.blueAccent.withOpacity(0.2),
                       onPressed: () {
                         if (imageController.searchController.text.isNotEmpty) {
@@ -68,41 +65,18 @@ class HomeScreen extends StatelessWidget {
             if (imageController.isLoading.value) ...{
               SizedBox(
                   height: Get.height * 0.25,
-                  child: Center(child: CircularProgressIndicator())),
+                  child: const Center(child: CircularProgressIndicator())),
             } else ...{
-              // CarouselSlider(
-              //   options: CarouselOptions(
-              //     // height: Get.height * 0.3,
-              //     autoPlay: false,
-              //     onPageChanged: (index, reason) {
-              //       if (index > 0) {
-              //         if (index == imageController.images.length - 1) {
-              //           imageController.carousalCurrentPage.value++;
-              //           imageController.fetchImages();
-              //         }
-              //       }
-              //     },
-              //   ),
-              //   items: imageController.images
-              //       .map((image) => Padding(
-              //             padding: const EdgeInsets.all(8.0),
-              //             child: SizedBox(
-              //                 height: Get.height * 0.2,
-              //                 child: Image.network(image.urls.small ?? '',
-              //                     fit: BoxFit.fill)),
-              //           ))
-              //       .toList(),
-              // ),
               CarouselSlider(
                 carouselController: imageController.carouselController,
                 options: CarouselOptions(
                   autoPlay: false,
-                  enlargeCenterPage: true, // Center image is larger
-                  viewportFraction: 0.8, // Slight margin between items
-                  aspectRatio: 16 / 8, // Adjust aspect ratio
+                  enlargeCenterPage: true,
+                  viewportFraction: 0.8, 
+                  aspectRatio: 16 / 8,
                   onPageChanged: (index, reason) {
                     imageController.currentCarouselIndex.value =
-                        index; // Track current index
+                        index;
                     if (index == imageController.images.length - 1) {
                       imageController.carousalCurrentPage.value++;
                       imageController.fetchImages();
@@ -117,27 +91,27 @@ class HomeScreen extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             boxShadow: [
-                              BoxShadow(
+                              const BoxShadow(
                                 color: Colors.black26,
                                 blurRadius: 10,
                                 spreadRadius: 5,
                                 offset:
-                                    Offset(0, 5), // Shadow direction: bottom
+                                    const Offset(0, 5), 
                               )
                             ],
                             borderRadius:
-                                BorderRadius.circular(15), // Rounded corners
+                                BorderRadius.circular(15),
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(
-                                15), // Clip to rounded corners
+                                15),
                             child: Image.network(
                               image.urls.small ?? '',
                               fit: BoxFit.cover,
                               loadingBuilder: (context, child, progress) {
                                 return progress == null
                                     ? child
-                                    : Center(
+                                    : const Center(
                                         child: CircularProgressIndicator());
                               },
                             ),
@@ -147,7 +121,7 @@ class HomeScreen extends StatelessWidget {
                     )
                     .toList(),
               ),
-              SizedBox(height: 20), // Spacing between slider and pagination
+              const SizedBox(height: 20), 
               Obx(() {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -158,7 +132,7 @@ class HomeScreen extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           imageController.carouselController.animateToPage(
-                              index); // Move carousel to selected index
+                              index);
                         },
                         child: CircleAvatar(
                           radius: 14,
@@ -169,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                                   : Colors.grey[300],
                           child: Text(
                             '${index + 1}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
@@ -180,29 +154,11 @@ class HomeScreen extends StatelessWidget {
                   }),
                 );
               }),
-
-              // Expanded(
-              //   child: ListView.builder(
-              //     itemCount: imageController.searchHistory.length,
-              //     itemBuilder: (context, index) {
-              //       return ListTile(
-              //         title: Text(imageController.searchHistory[index]),
-              //         onTap: () {
-              //           imageController.searchController.text = imageController.searchHistory[index];
-              //           imageController.searchImages(imageController.searchHistory[index]);
-              //         },
-              //       );
-              //     },
-              //   ),
-              // ),
             },
-            Divider(
+            const Divider(
               color: Colors.grey,
             ),
-            // SizedBox(
-            //   height: 20,
-            // ),
-            Text("Search Images"),
+            const Text("Search Images"),
             Obx(() {
               if (imageController.searchImage.length > 1) {
                 return Expanded(
@@ -210,49 +166,49 @@ class HomeScreen extends StatelessWidget {
                     controller: imageController.scrollController,
                     itemCount: imageController.searchImage.length,
                     padding: const EdgeInsets.symmetric(
-                        vertical: 16.0), // Add padding to the ListView
+                        vertical: 16.0),
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0,
-                            horizontal: 16.0), // Spacing between items
+                            horizontal: 16.0), 
                         child: Container(
                           height: MediaQuery.of(context).size.height *
-                              0.3, // Increased height for better visibility
+                              0.3,
                           decoration: BoxDecoration(
                             borderRadius:
-                                BorderRadius.circular(15), // Rounded corners
+                                BorderRadius.circular(15),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey
-                                    .withOpacity(0.3), // Shadow color
-                                blurRadius: 8, // Spread of the shadow
-                                offset: Offset(0, 5), // Direction of the shadow
+                                    .withOpacity(0.3), 
+                                blurRadius: 8, 
+                                offset: const Offset(0, 5), 
                               ),
                             ],
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(
-                                15), // Clip the image to the same border radius
+                                15),
                             child: Image.network(
                               imageController.searchImage[index].urls!.small ??
                                   '',
                               fit: BoxFit
-                                  .cover, // Fit the image to cover the container
+                                  .cover,
                               loadingBuilder: (context, child, progress) {
                                 return progress == null
                                     ? child
-                                    : Center(
+                                    : const Center(
                                         child:
-                                            CircularProgressIndicator()); // Loader while image loads
+                                            CircularProgressIndicator()); 
                               },
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
                                   color: Colors
-                                      .grey[300], // Background color for error
-                                  child: Center(
+                                      .grey[300],
+                                  child: const Center(
                                       child: Icon(Icons.error,
-                                          color: Colors.red)), // Error icon
+                                          color: Colors.red)), 
                                 );
                               },
                             ),
@@ -262,53 +218,33 @@ class HomeScreen extends StatelessWidget {
                     },
                   ),
                 );
-
-                // Expanded(
-                //   child: ListView.builder(
-                //     controller: imageController.scrollController,
-                //     itemCount: imageController.searchImage.length,
-                //     itemBuilder: (context, index) {
-                //       return Container(
-                //         height: MediaQuery.of(context).size.height * 0.1,
-                //         width: MediaQuery.of(context).size.width * 0.8,
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(10),
-                //         ),
-                //         child: Image.network(
-                //           imageController.searchImage[index].urls.small,
-                //           fit: BoxFit.contain,
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // );
               } else {
                 return Obx(() {
                   return Container(
                     width: Get.width,
                     padding: const EdgeInsets.symmetric(
                         vertical: 16.0,
-                        horizontal: 12.0), // Add padding for better spacing
+                        horizontal: 12.0),
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(
-                          255, 224, 248, 249), // Soft background color
+                      color: const Color.fromARGB(
+                          255, 224, 248, 249), 
                       borderRadius: BorderRadius.circular(
-                          15), // Rounded corners for the container
+                          15), 
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey
-                              .withOpacity(0.2), // Light shadow for depth
+                              .withOpacity(0.2),
                           spreadRadius: 2,
                           blurRadius: 10,
-                          offset: Offset(0, 3), // Shadow direction
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
                     child: Wrap(
                       spacing: 10,
-                      runSpacing: 10, // Spacing between rows of chips
+                      runSpacing: 10, 
                       alignment:
-                          WrapAlignment.start, // Align chips to the start
+                          WrapAlignment.start,
                       children: [
                         for (int i = 0;
                             i < min(imageController.searchHistory.length, 10);
@@ -323,23 +259,23 @@ class HomeScreen extends StatelessWidget {
                             child: Chip(
                               label: Text(
                                 imageController.searchHistory[i],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors
-                                      .white, // White text color for contrast
+                                      .white,
                                   fontWeight:
-                                      FontWeight.bold, // Bold text for emphasis
+                                      FontWeight.bold,
                                 ),
                               ),
                               backgroundColor:
-                                  Colors.teal, // Chip background color
-                              elevation: 4, // Add elevation for depth
+                                  Colors.teal, 
+                              elevation: 4,
                               shadowColor:
-                                  Colors.grey.withOpacity(0.3), // Chip shadow
-                              padding: EdgeInsets.symmetric(
+                                  Colors.grey.withOpacity(0.3), 
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 10,
-                                  vertical: 5), // Adjust chip padding
-                              avatar: Icon(
-                                Icons.history, // History icon inside the chip
+                                  vertical: 5),
+                              avatar: const Icon(
+                                Icons.history,
                                 color: Colors.white,
                                 size: 18,
                               ),
@@ -350,36 +286,12 @@ class HomeScreen extends StatelessWidget {
                     ),
                   );
                 });
-
-                // Obx(() {
-                //   return Container(
-                //     width: Get.width,
-                //     color: Color.fromARGB(255, 224, 248, 249),
-                //     child: Wrap(
-                //       spacing: 10,
-                //       children: [
-                //         for (int i = 0;
-                //             i < imageController.searchHistory.length;
-                //             i++) ...{
-                //           GestureDetector(
-                //             onTap: () async {
-                //               imageController.searchImages(
-                //                   imageController.searchHistory[i]);
-                //             },
-                //             child: Chip(
-                //                 label: Text(imageController.searchHistory[i])),
-                //           )
-                //         }
-                //       ],
-                //     ),
-                //   );
-                // });
               }
             }),
             Obx(() {
               return (imageController.searchLoading.value)
-                  ? CircularProgressIndicator()
-                  : SizedBox.shrink();
+                  ? const CircularProgressIndicator()
+                  : const SizedBox.shrink();
             }),
           ],
         );

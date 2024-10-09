@@ -37,16 +37,16 @@ class ImageController extends GetxController {
   void _scrollListener() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-      // Reached the bottom of the list, call your API method here
+     
       fetchMoreImages();
     }
   }
 
   Future<void> fetchMoreImages() async {
-    if (isLoading.value) return; // Prevent multiple requests
+    if (isLoading.value) return; 
     currentPage.value++;
-    // Call the searchImages method with the current search query
-    await searchImages(searchController.text); // Use the actual query variable
+   
+    await searchImages(searchController.text); 
   }
 
   Future<void> fetchImages() async {
@@ -64,23 +64,6 @@ class ImageController extends GetxController {
         print(newImages.first.urls.runtimeType);
         images.value = newImages;
         currentCarouselIndex.value = 0;
-
-        // Extract URLs and add them to the observable images list
-        // images.addAll(newImages.map((image) => image.urls).toList());
-        // print(res[0]['urls']);
-        // for(int i=0 ; i<res.length;i++){
-
-        // }
-        // print(res);
-        // var x = Results.fromJson(res);
-        // images.value.add(x.urls ?? {} as Urls);
-        // var x = UnsplashImage.fromJson(res);
-
-        // images.add(res.map((item) => Urls.fromJson(item['urls'])));
-        // RxList<Urls> newImages = res.map((item) => Urls.fromJson(item)).toList();
-        // images = newImages;
-        // images.value = UnsplashImage.fromJson(res);
-        // images.add(x);
       } else {
         Get.snackbar("Error", "Sorry Cannot Get data",
             backgroundColor: Colors.black, colorText: Colors.white);
@@ -99,9 +82,6 @@ class ImageController extends GetxController {
       searchHistory.add(query);
     }
     searchLoading.value = true;
-    // currentPage.value = 1;
-    // images.clear();
-
     final response = await http.get(
       Uri.parse(
           'https://api.unsplash.com/search/photos?query=$query&page=${currentPage.value}&per_page=10&client_id=E42CiOZXtQAQQ4MQBSIGO2vfhJ-Y7K0PPpf4s4dxhBg'),
@@ -115,7 +95,7 @@ class ImageController extends GetxController {
       print("----------");
       print(searchData?.results);
       print("=============");
-      // await saveSearchQuery(query);
+     
     }
     searchLoading.value = false;
   }
@@ -129,8 +109,6 @@ class ImageController extends GetxController {
         'userId': userId,
         'timestamp': FieldValue.serverTimestamp(),
       });
-      print("==========${x}");
-      // fetchSearchHistory(); // Update search history
     } else {
       print("=========No User Id Data Found");
     }
@@ -150,17 +128,68 @@ class ImageController extends GetxController {
     }
   }
 
+  void showLogoutDialog() {
+  Get.dialog(
+    AlertDialog(
+      title: const Text(
+        'Logout',
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+      ),
+      content: const Text(
+        'Are you sure you want to logout?',
+        style: TextStyle(fontSize: 16),
+      ),
+      actions: [
+        Row(
+          children: [
+            Expanded(
+              child: TextButton(
+                style: TextButton.styleFrom(
+            backgroundColor: Colors.red[700],
+            foregroundColor: Colors.white, 
+          ),
+                onPressed: () {
+                  Get.back(); 
+                },
+                child: const Text(
+                  'No',
+                 
+                ),
+              ),
+            ),
+            const SizedBox(width: 10,),
+        Expanded(
+          child: TextButton(
+            style: TextButton.styleFrom(
+            backgroundColor: Colors.blueGrey[700],
+            foregroundColor: Colors.white,
+          ),
+            onPressed: () {
+             
+              Get.back(); 
+              logout(); 
+            },
+            child: const Text(
+              'Yes',
+              
+            ),
+          ),
+        ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
   void logout() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await FirebaseAuth.instance.signOut();
       bool x = await prefs.clear();
-      print("===========${prefs.getString("token")}");
       if (x) {
         Get.offAllNamed('/');
       }
-      // Optionally, navigate to the login screen or show a message
-      print("User logged out successfully");
     } catch (e) {
       print("Error logging out: $e");
     }
